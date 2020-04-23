@@ -1,8 +1,12 @@
 <div class="container">
     <h2 class="heading">Create New Post :</h2>
-    <mat-card class="example-card">
+    <mat-card class="example-card" >
     
-    <form (ngSubmit)="onPostSubmit()" [formGroup]="postForm">        
+    <form (ngSubmit)="onPostSubmit()" [formGroup]="postForm" >   
+        <!-- <mat-card-header>
+        <img mat-card-avatar appGravatar src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=300">          
+        <mat-card-subtitle><b>Swati Sharma</b></mat-card-subtitle>
+        </mat-card-header> -->
         <mat-form-field appearance="outline" class="postField">  
             <img mat-card-avatar appGravatar src="http://www.newthinktank.com/wp-content/uploads/2012/05/Gravatar.jpg">          
             <textarea matInput placeholder="Say something.."
@@ -14,7 +18,7 @@
             <mat-chip-list #chipList aria-label="Tag selection">
                 <mat-chip *ngFor="let tagElem of tags" [selectable]="selectable"
                          [removable]="removable" (removed)="remove(tagElem)">
-                     {{tagElem.name}}
+                     {{tagElem}}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
                 <input matInput class= "tagField" placeholder="Add tags.." 
@@ -27,7 +31,7 @@
         </mat-form-field>
 
         <br/>
-        <button mat-raised-button color="primary" [disabled]="!(isPostAvailable || isTagAvailable)"> Post </button>
+        <button mat-raised-button color="warn" [disabled]="!(isPostAvailable || isTagAvailable)"> Post </button>
     </form>
 </mat-card>
 </div>

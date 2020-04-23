@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-// import { Post } from '../post';
 import { FormGroup, FormControl } from '@angular/forms';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Post } from 'src/app/common-components/models/post.model';
+import { PostService } from 'src/app/common-components/services/post.service';
+import { Router } from '@angular/router';
 
-export interface Tag {
+/*export interface Tag {
   name: string;
-}
-export interface Post {
-  name: string;
-}
+} */
 
 @Component({
   selector: 'app-add-post',
@@ -23,16 +22,17 @@ export class AddPostComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  tags: Tag[] = [];
+  tags: string[] = [];
   tagField = '';
   postBody = '';
   isPostAvailable = false;
   isTagAvailable = false;
-  post: Post;
   postForm: FormGroup;
   isItemPosted = false;
+  postContent = '';
+  count = 13;
 
-  constructor()  { }
+  constructor(private postService: PostService, private route: Router)  { }
 
   ngOnInit(): void {
 
@@ -40,7 +40,6 @@ export class AddPostComponent implements OnInit {
       postBody : new FormControl(),
       tagField : new FormControl(),
     });
-
     this.postForm.controls.postBody.valueChanges.subscribe(value => {
      value === '' ? this.isPostAvailable = false :  this.isPostAvailable = true;
     });
@@ -49,22 +48,7 @@ export class AddPostComponent implements OnInit {
     });
   }
 
-  onPostSubmit() {
-    let postContent = '';
-    if (this.postForm) {
-      postContent = this.postForm.controls.postBody.value;
-    }
-    for (let tag of this.tags) {
-      if (postContent) {
-        postContent = postContent + ' ' + tag.name;
-      } else {
-        postContent = tag.name;
-      }
-    }
-    this.isItemPosted = true;
-  }
-
-  remove(tag: Tag): void {
+  remove(tag: string): void {
     const index = this.tags.indexOf(tag);
     if (index >= 0) {
       this.tags.splice(index, 1);
@@ -81,10 +65,43 @@ export class AddPostComponent implements OnInit {
       value = '#' + value;
     }
     if ((value || '').trim()) {
-      this.tags.push({name: value.trim()});
+      this.tags.push(value.trim());
     }
     if (input) {
       input.value = '';
     }
+  }
+
+  onPostSubmit() {
+    this.postContent = '';
+    if (this.postForm) {
+      this.postContent = this.postForm.controls.postBody.value;
+    }
+    /*
+     for (let tag of this.tags) {
+      if (this.postContent) {
+        this.postContent = this.postContent + ' ' + tag.name;
+      } else {
+        this.postContent = tag.name;
+      }
+    } */
+    this.savePostData();
+  }
+
+  savePostData() {
+    // set post body to be saved:
+    const post: Post = {
+      postId: this.count++,
+      userId: this.count++,
+      content: this.postContent,
+      createdAt: new Date(),
+      parentId: null,
+      postcol: null,
+      hashtags: this.tags,
+      reactionCount: 0
+    };
+    this.postService.getPosts().push(post);
+    // this.postService.savePost(post);
+    this.route.navigate(['/post']);
   }
 }

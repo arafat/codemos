@@ -1,50 +1,50 @@
-
 <div><div class="head">
     <span class="post-list-header">Post List: </span>
     <span class="example-fill-remaining-space"></span>
-    <button mat-fab color="warn" class="addpost" [routerLink]="['/addpost']">
+    <button mat-fab color="warn" class="addpost" matTooltip="Create new Post"
+    aria-label="Button that displays a tooltip when focused or hovered over" [routerLink]="['/addpost']">
       <span class=" material-icons">
         post_add
       </span>
     </button>
   </div>
  
+  <div class="listOfPosts" *ngFor="let post of posts; let i= index">
   <mat-card [class.mat-elevation-z4]=true class="post-card col-12 my-2 ">
     <div class="post-tags">
       <mat-chip-list>
-        <mat-chip>#Blogger</mat-chip>
-        <mat-chip>#Fun</mat-chip>
-        <mat-chip>#LGTM</mat-chip>
+        <mat-chip *ngFor="let tag of posts[i].hashtags" [selectable]="selectable"> {{ tag }} </mat-chip>
       </mat-chip-list>
     </div>
     <div class="toolbar border-bottom pt-3 px-3 border-dark">
-      <span class="title-name">Utkarsh Tiwari </span>
+      <span class="title-name"> Utkarsh Tiwari </span>
       <span class="example-full-width"></span>
-      <span class="title-time">... posted 23 hour ago</span>
+      <span class="title-time"> {{post.createdAt}} </span>
     </div>
  
     <div class="post-content">
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. At possimus ad labore deserunt consequatur ullam molestias
-      sequi quod modi. Esse iusto quibusdam officia soluta quidem laborum nobis sequi est nisi aut dolor, rerum molestias!
-      Enim consequatur magni asperiores nostrum veniam?
+        {{post.content}}
     </div>
     <mat-toolbar class="post-toolbar">
       <form class="example-form">
-        <button mat-button class="nav-items"><span class="material-icons">
+        <button mat-button class="nav-items" matTooltip="Like"
+        aria-label="Button that displays a tooltip when focused or hovered over"><span class="material-icons">
             thumb_up_alt
           </span><span>
-            42
+            {{post.reactionCount}}
           </span></button>
       </form>
       <form class="example-form">
-        <button mat-button class="nav-items"><span class="material-icons">
+        <button mat-button class="nav-items" matTooltip="Dislike"
+        aria-label="Button that displays a tooltip when focused or hovered over"><span class="material-icons">
             thumb_down_alt
           </span><span>
             12
           </span>
         </button>
       </form>
-      <button mat-button class="nav-items"><span class="material-icons">
+      <button mat-button class="nav-items" matTooltip="Comments"
+      aria-label="Button that displays a tooltip when focused or hovered over"><span class="material-icons">
           comment
         </span>
         <span>
@@ -91,33 +91,6 @@
  
     <div class="comment-section">
       <div class="comment">
-         <div class="comment-title">
-           <span class="comment-title-name">Shivam Kumar Giri </span>
-            <span class="comment-title-time">... commented 23 hour ago</span>
-            <span class="example-fill-remaining-space"></span>
-            <form class="example-form">
-              <button mat-button class="comment-title-time"><span class="material-icons">
-                  thumb_up_alt
-                </span><span>
-                  34
-                </span></button>
-            </form>
- 
-            <form class="example-form">
-              <button mat-button class="nav-items">
-                <span class="material-icons">
-                  flag
-                </span></button>
-            </form>
-          </div>
-         <div class="comment-content">
-           Yrr kuch toh accha daalo
-         </div>
-      </div>
-    </div>
- 
-    <div class="comment-section">
-      <div class="comment">
         <div class="comment-title">
           <span class="comment-title-name">Anurag Pandya </span>
           <span class="comment-title-time">... commented 2 hour ago</span>
@@ -143,4 +116,6 @@
       </div>
     </div>
   </mat-card>
-  </div> 
+
+</div>
+</div> 
